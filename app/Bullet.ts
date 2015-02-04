@@ -24,7 +24,8 @@ class Bullet implements IGameEntity {
     }
 
     public update(): void {
-        this._position.y--;
+        var heightRatio = this._game.size.height * 0.005;
+        this._position.y -= heightRatio;
 
         if (this._position.y <= 0) {
             this._game.removeEntity(this);

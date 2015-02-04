@@ -6,6 +6,8 @@ import IGameEntity = require("IGameEntity");
 
 class Game {
     constructor(public element: HTMLCanvasElement) {
+        element.width = window.innerWidth;
+        element.height = window.innerHeight;
         this.size = new Size(element.width, element.height);
 
         this._entities.push(new Player(this));

@@ -27,12 +27,13 @@ class Player implements IGameEntity {
     }
 
     public update(): void {
-        if (this._game.inputter.isDown(Inputter.Key.Left)) {
-            this._position.x--;
+        var widthRatio = this._game.size.width * 0.005;
+        if (this._game.inputter.isDown(Inputter.Key.Left) && this._position.x > this._size.width / 2) {
+            this._position.x -= widthRatio;
         }
 
-        if (this._game.inputter.isDown(Inputter.Key.Right)) {
-            this._position.x++;
+        if (this._game.inputter.isDown(Inputter.Key.Right) && this._position.x < this._game.size.width - this._size.width / 2) {
+            this._position.x += widthRatio;
         }
 
         if (this._canFire) {
