@@ -6,16 +6,16 @@ import IGameEntity = require("IGameEntity");
 
 class Game {
     constructor(public element: HTMLCanvasElement) {
-        this._size = new Size(element.width, element.height);
+        this.size = new Size(element.width, element.height);
 
-        this._entities.push(new Player(this, new Point(this._size.width / 2, this._size.height - 25)));
+        this._entities.push(new Player(this));
 
         this._drawingContext = this.element.getContext("2d");
     }
 
     private _drawingContext: CanvasRenderingContext2D;
 
-    private _size: Size;
+    public size: Size;
 
     private _entities: IGameEntity[] = [];
 
@@ -28,18 +28,29 @@ class Game {
         });
     }
 
-    public update() {
+    public update(): void {
         this._entities.forEach(entity => {
             entity.update();
         });
     }
 
-    public draw() {
-        this._drawingContext.clearRect(0, 0, this._size.width, this._size.height);
+    public draw(): void {
+        this._drawingContext.clearRect(0, 0, this.size.width, this.size.height);
 
         this._entities.forEach(entity => {
             entity.draw(this._drawingContext);
         });
+    }
+
+    public removeEntity(entity: IGameEntity): void {
+        var index = this._entities.indexOf(entity);
+        if (index >= 0) {
+            this._entities.splice(index, 1);
+        }
+    }
+
+    public addEntity(entity: IGameEntity): void {
+        this._entities.push(entity);
     }
 
     private _startTick(fn) {
