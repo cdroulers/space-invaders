@@ -1,9 +1,9 @@
 ﻿import Point = require("Point");
 
 interface IGameEntity {
-    position: Point;
+    draw(canvas: CanvasRenderingContext2D): void;
 
-    draw(canvas: CanvasRenderingContext2D) : void;
+    update(): void;
 }
 
 export = IGameEntity;
