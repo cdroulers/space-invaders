@@ -1,4 +1,5 @@
-﻿import Inputter = require("Inputter");
+﻿import Invader = require("Invader");
+import Inputter = require("Inputter");
 import Size = require("Size");
 import Point = require("Point");
 import Player = require("Player");
@@ -10,7 +11,13 @@ class Game {
         element.height = window.innerHeight;
         this.size = new Size(element.width, element.height);
 
-        this._entities.push(new Player(this));
+        this._player = new Player(this);
+        this._entities.push(this._player);
+
+        for (var i = 0; i < 24; i++) {
+            var size = this.size.width * 0.075;
+            this._entities.push(new Invader(this, new Point(size / 2 + size * (i % 8), size / 2 + size * (i % 3))));
+        }
 
         this._drawingContext = this.element.getContext("2d");
     }
@@ -20,6 +27,8 @@ class Game {
     public size: Size;
 
     private _entities: IGameEntity[] = [];
+
+    private _player: Player;
 
     public inputter: Inputter.Inputter = new Inputter.Inputter();
 
@@ -31,12 +40,27 @@ class Game {
     }
 
     public update(): void {
+        this._entities.forEach(e1 => {
+            this._entities.forEach(e2 => {
+                if (e1 !== e2 && this._isColliding(e1, e2)) {
+                    this.removeEntity(e1);
+                    this.removeEntity(e2);
+                }
+            });
+        });
+
         this._entities.forEach(entity => {
             entity.update();
         });
     }
 
     public draw(): void {
+        if (this._entities.indexOf(this._player) < 0) {
+            this._drawingContext.font = "bold 4em Arial";
+            this._drawingContext.fillText("YOU LOST", this.size.width / 2, this.size.height / 2);
+            return;
+        }
+
         this._drawingContext.clearRect(0, 0, this.size.width, this.size.height);
 
         this._entities.forEach(entity => {
@@ -62,6 +86,13 @@ class Game {
         };
 
         requestAnimationFrame(tick);
+    }
+
+    private _isColliding(e1: IGameEntity, e2: IGameEntity): boolean {
+        return !(e1.position.x > e2.position.x + e1.size.width ||
+            e1.position.y > e2.position.y + e2.size.width ||
+            e1.position.x + e1.size.width < e2.position.x ||
+            e1.position.y + e1.size.height < e2.position.y);
     }
 }
 

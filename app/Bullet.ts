@@ -1,4 +1,5 @@
-﻿import Size = require("Size");
+﻿import Invader = require("Invader");
+import Size = require("Size");
 import Inputter = require("Inputter");
 import Game = require("Game");
 import Point = require("Point");
@@ -7,27 +8,27 @@ import IGameEntity = require("IGameEntity");
 class Bullet implements IGameEntity {
     constructor(game: Game, position: Point) {
         this._game = game;
-        this._position = position;
-        this._size = this._game.size.resize(0.005);
-        this._size.height = this._size.width;
+        this.position = position;
+        this.size = this._game.size.resize(0.005);
+        this.size.height = this.size.width;
     }
+
+    public position: Point;
+
+    public size: Size;
 
     private _game: Game;
 
-    private _position: Point;
-
-    private _size: Size;
-
     public draw(canvas: CanvasRenderingContext2D): void {
         canvas.fillStyle = "red";
-        canvas.fillRect(this._position.x - this._size.width / 2, this._position.y - this._size.height / 2, this._size.width, this._size.height);
+        canvas.fillRect(this.position.x - this.size.width / 2, this.position.y - this.size.height / 2, this.size.width, this.size.height);
     }
 
     public update(): void {
         var heightRatio = this._game.size.height * 0.005;
-        this._position.y -= heightRatio;
+        this.position.y -= heightRatio;
 
-        if (this._position.y <= 0) {
+        if (this.position.y <= 0 || this.position.y >= this._game.size.height) {
             this._game.removeEntity(this);
         }
     }

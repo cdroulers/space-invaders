@@ -27,6 +27,7 @@
     <TypeScriptCompile Include="app\Game.ts" />
     <TypeScriptCompile Include="app\IGameEntity.ts" />
     <TypeScriptCompile Include="app\Inputter.ts" />
+    <TypeScriptCompile Include="app\Invader.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\Player.ts" />
     <TypeScriptCompile Include="app\Size.ts" />
