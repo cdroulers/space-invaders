@@ -12,11 +12,11 @@ class Game {
         this.size = new Size(element.width, element.height);
 
         this._player = new Player(this);
-        this._entities.push(this._player);
+        this.entities.push(this._player);
 
         for (var i = 0; i < 24; i++) {
             var size = this.size.width * 0.075;
-            this._entities.push(new Invader(this, new Point(size / 2 + size * (i % 8), size / 2 + size * (i % 3))));
+            this.entities.push(new Invader(this, new Point(size / 2 + size * (i % 8), size / 2 + size * (i % 3))));
         }
 
         this._drawingContext = this.element.getContext("2d");
@@ -26,7 +26,7 @@ class Game {
 
     public size: Size;
 
-    private _entities: IGameEntity[] = [];
+    public entities: IGameEntity[] = [];
 
     private _player: Player;
 
@@ -40,8 +40,8 @@ class Game {
     }
 
     public update(): void {
-        this._entities.forEach(e1 => {
-            this._entities.forEach(e2 => {
+        this.entities.forEach(e1 => {
+            this.entities.forEach(e2 => {
                 if (e1 !== e2 && this._isColliding(e1, e2)) {
                     this.removeEntity(e1);
                     this.removeEntity(e2);
@@ -49,13 +49,13 @@ class Game {
             });
         });
 
-        this._entities.forEach(entity => {
+        this.entities.forEach(entity => {
             entity.update();
         });
     }
 
     public draw(): void {
-        if (this._entities.indexOf(this._player) < 0) {
+        if (this.entities.indexOf(this._player) < 0) {
             this._drawingContext.font = "bold 4em Arial";
             this._drawingContext.fillText("YOU LOST", this.size.width / 2, this.size.height / 2);
             return;
@@ -63,20 +63,20 @@ class Game {
 
         this._drawingContext.clearRect(0, 0, this.size.width, this.size.height);
 
-        this._entities.forEach(entity => {
+        this.entities.forEach(entity => {
             entity.draw(this._drawingContext);
         });
     }
 
     public removeEntity(entity: IGameEntity): void {
-        var index = this._entities.indexOf(entity);
+        var index = this.entities.indexOf(entity);
         if (index >= 0) {
-            this._entities.splice(index, 1);
+            this.entities.splice(index, 1);
         }
     }
 
     public addEntity(entity: IGameEntity): void {
-        this._entities.push(entity);
+        this.entities.push(entity);
     }
 
     private _startTick(fn) {

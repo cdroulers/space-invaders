@@ -38,7 +38,7 @@ class Player implements IGameEntity {
 
         if (this._canFire) {
             if (this._game.inputter.isDown(Inputter.Key.Space)) {
-                this._game.addEntity(new Bullet(this._game, new Point(this.position.x, this.position.y - this.size.height)));
+                this._game.addEntity(new Bullet(this._game, new Point(this.position.x, this.position.y - this.size.height), new Point(0, -1)));
                 this._canFire = false;
                 setTimeout(() => this._canFire = true, 500);
             }

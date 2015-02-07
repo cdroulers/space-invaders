@@ -41,6 +41,14 @@ class Invader implements IGameEntity {
 
         this.position.x += this._speed * this._direction;
         this._patrolX += this._speed * this._direction;
+
+        if (Math.random() < 0.0025) {
+            if (this._game.entities.filter(x => x instanceof Invader &&
+                this !== x &&
+                x.position.y > this.position.y + this.size.height).length == 0) {
+                this._game.addEntity(new Bullet(this._game, new Point(this.position.x, this.position.y + this.size.height + 20), new Point(Math.random(), 1)));
+            }
+        }
     }
 }
 
